@@ -8,11 +8,28 @@
     <title>Weather or Not</title>
 </head>
 <body>
-    <div>
-        <form class="search-city">
-            <input type="text" class="city-name" placeholder="City name">
-            <button class="search-btn">Search</button>
-        </form>
+    <div class="container">
+        <div class="row">
+            <h1>Weather Dashboard</h1>
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <div>
+                    <form class="search-city">
+                        <input type="text" class="city-name" placeholder="City name" id="city-name">
+                        <button class="search-btn">Search</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="row" id="current-weather">
+
+                </div>
+                <div class="row" id="forecast">
+
+                </div>
+            </div>
+        </div>
     </div>
     
     <script src="./js/script.js"></script>
