@@ -1,23 +1,21 @@
 // const values
 // open weather api key
-const owApiKey = "86c53cc7b2641860bb33bd3243728e99"
+const owApiKey = "86c53cc7b2641860bb33bd3243728e99";
 // weatherstack api key
-const wsApiKey = "2e3a3d64906bc051b24e7380c3faaf72"
-var cityArray = [];
+const wsApiKey = "2e3a3d64906bc051b24e7380c3faaf72";
 
-var cityQuery = $("#city-name").val();
-// var cityQuery = "atlanta";
-console.log(cityQuery);
+var cityArray = [];
+var cityQuery = document.getElementById("#city-name");
+// var cityQuery = "Denver";
+// console.log(cityQuery);
 
 
 
 // Weather functions
-$("#search-btn").on("click", function(){
-    getOpenWeather(cityQuery);
- });
 
 // today's weather
 function getOpenWeather(cityQuery) {
+    // var cityQuery = document.getElementById("#city-name");
     let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityQuery}&appid=${owApiKey}`;
     fetch(apiUrl)
     .then(res => res.json())
@@ -42,7 +40,7 @@ function getOpenWeather(cityQuery) {
         let lat = data.coord.lat;
         let lon = data.coord.lon;
         getUvi(lat, lon);
-        getFiveDay(cityName);
+        getFiveDay(cityQuery);
     })
     .catch((error) => {
        $("#search-history").empty(); 
@@ -75,18 +73,18 @@ function getUvi(lat, lon) {
 };
 
 // five day
-function getFiveDay(cityName) {
+function getFiveDay(cityQuery) {
     let thirdApiUrl = `https://api.openweathermap.org/data/2.5/forecast?q=${cityQuery}&appid=${owApiKey}`;
     fetch(thirdApiUrl)
     .then(res => res.json())
     .then(data => {
        let fiveDays = $("<div>").addClass("row justify-content-between");
-       $("#forecast").html("<h4>5-Day Forecast:</h4>").addClass("mt-3 row justify-content-start").append(cardDeck);
+       $("#forecast").html("<h4>5-Day Forecast:</h4>").addClass("mt-3 row justify-content-start").append(fiveDays);
        for (let i = 4; i < 40; i += 8) {
           let card = $("<div>").addClass("col-sm-12 col-md-6 col-lg-2 card text-white bg-dark").attr("id", "forecast-card");
           let title = $("<h4>").addClass("card-title").text(new Date(data.list[i].dt_txt).toLocaleString().split(",")[0]);
           let icon = $("<img>").attr("src", `http://openweathermap.org/img/w/${data.list[i].weather[0].icon}.png`).addClass("forecast-icon");
-          let temp = $("<p>").addClass("card-text").text(`Temp: ${data.list[i].main.temp}\xB0F`);
+          let temp = $("<p>").addClass("card-text").text(`Temp: ${data.list[i].main.temp - 273}\xB0C`);
           let wind = $("<p>").addClass("card-text").text(`Wind Speed: ${data.list[i].wind.speed} mph`);
           let humidity = $("<p>").addClass("card-text").text(`Humidity: ${data.list[i].main.humidity}`);
  
@@ -97,4 +95,11 @@ function getFiveDay(cityName) {
     });   
  };
 
+function displayWeather () {
+    getOpenWeather(cityQuery);
+}
+
+// getOpenWeather(cityQuery);
+
+$("#search-btn").on("click", displayWeather);
 console.log("currently all good");
